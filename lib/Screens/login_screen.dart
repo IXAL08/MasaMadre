@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
         const BackgroundImage(),
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: Column(
+          body: ListView(
             children: [
               Container(
                 height: 300,
