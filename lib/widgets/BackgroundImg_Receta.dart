@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BackgroundImageReceta extends StatelessWidget {
-  const BackgroundImageReceta({super.key});
+  final String urlImage;
+  const BackgroundImageReceta({super.key, required this.urlImage});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +14,9 @@ class BackgroundImageReceta extends StatelessWidget {
       ).createShader(bounds),
       blendMode: BlendMode.darken,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("Media/images/Login_image.jpg"),
+              image: AssetImage("$urlImage"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(Colors.white10, BlendMode.colorDodge),
             )

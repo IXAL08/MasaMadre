@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/Screens/receta1.dart';
+import 'pages.dart';
 import 'package:proyecto/widgets/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //7B471E, D6803C, 9E5726
 
@@ -12,6 +13,24 @@ class index extends StatefulWidget {
 }
 
 class _indexState extends State<index> {
+  String email = "", password = "", username = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCred();
+  }
+
+  void getCred() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      email = pref.getString("email")!;
+      password = pref.getString("password")!;
+      username = pref.getString("username")!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +48,7 @@ class _indexState extends State<index> {
           ),
         ),
       ),
-      drawer: const Dibujador(),
+      drawer: Dibujador(),
       body: const SingleChildScrollView(
         child: Center(
           child: Column(
@@ -37,13 +56,14 @@ class _indexState extends State<index> {
               SizedBox(height: 10,),
               Text("AÑADIDOS RECIENTEMENTE", style: TextStyle(fontFamily: "Titulos",fontSize: 30),),
               SizedBox(height: 25,),
-              carta(titulo: "RECETA",size: 50,imagen: "Media/images/Login_image.jpg",url: receta1(),),
-              //carta(titulo: "RECETA",size: 50,imagen: "Media/images/Login_image.jpg"),
-              //carta(titulo: "RECETA",size: 50,imagen: "Media/images/Login_image.jpg"),
+              carta(titulo: "Bolillo",size: 50,imagen: "Media/images/Bolillo_Background.jpg",url: receta1(),),
+              carta(titulo: "Concha",size: 50,imagen: "Media/images/Concha_Background.jpg",url: receta2(),),
+              carta(titulo: "Telera",size: 50,imagen: "Media/images/Telera_Background.jpg",url: receta3(),),
             ],
           ),
         ),
       ),
     );
   }
+
 }

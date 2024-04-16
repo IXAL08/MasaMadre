@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
-import 'package:proyecto/Screens/index.dart';
+import 'package:proyecto/Screens/pages.dart';
+import 'package:sidebarx/sidebarx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dibujador extends StatefulWidget {
   const Dibujador({super.key});
@@ -12,94 +11,66 @@ class Dibujador extends StatefulWidget {
 }
 
 class _DibujadorState extends State<Dibujador> {
+  String email = "", password = "", username = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCred();
+  }
+
+  void getCred() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      email = pref.getString("email")!;
+      password = pref.getString("password")!;
+      username = pref.getString("username")!;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            /// Header of the Drawer
-            Material(
-              color: Color(0xFF9E5726),
-              child: InkWell(
-                onTap: (){
-                  /// Close Navigation drawer before
-                  Navigator.pop(context);
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => index()), (route) => false);
-                },
-                child: Container(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top,
-                      bottom: 24
-                  ),
-                  child: const Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 52,
-                        backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNtaWx5JTIwZmFjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
-                        ),
-                      ),
-                      SizedBox(height: 12,),
-                      Text('Sophia',
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white
-                        ),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            /// Header Menu items
-            Column(
-              children: [
-                ListTile(
-                  leading: Icon(Icons.home_outlined),
-                  title: Text('Home'),
-                  onTap: (){
-                    /// Close Navigation drawer before
-                    Navigator.pop(context);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => index()), (route) => false);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.favorite_border),
-                  title: Text('Favourites'),
-                  onTap: (){
-                    /// Close Navigation drawer before
-                    Navigator.pop(context);
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.workspaces),
-                  title: Text('Workflow'),
-                  onTap: (){},
-                ),
-                ListTile(
-                  leading: Icon(Icons.update),
-                  title: Text('Updates'),
-                  onTap: (){},
-                ),
-                const Divider(color: Colors.black45,),
-                ListTile(
-                  leading: Icon(Icons.account_tree_outlined),
-                  title: Text('Plugins'),
-                  onTap: (){},
-                ),
-                ListTile(
-                  leading: Icon(Icons.notifications_outlined),
-                  title: Text('Notifications'),
-                  onTap: (){},
-                ),
-              ],
-            )
-          ],
-        ),
+    return SidebarX(
+      controller: SidebarXController(selectedIndex: 0, extended: true),
+      items: const [
+        SidebarXItem(icon: Icons.home, label: 'Inicio'),
+        SidebarXItem(icon: Icons.person, label: 'Chef'),
+      ],
+      theme: SidebarXTheme(
+        width: 150,
+        textStyle: const TextStyle(fontFamily: "Parrafos", fontSize: 35),
+        selectedTextStyle: const TextStyle(fontFamily: "Parrafos", fontSize: 35),
+        itemTextPadding: const EdgeInsets.only(left: 10),
+        selectedItemTextPadding: const EdgeInsets.only(left: 10),
+        selectedItemDecoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.black)),
+        iconTheme: IconThemeData(color: const Color(0xFF9E5726).withOpacity(0.5)),
+        selectedIconTheme: const IconThemeData(color: Color(0xFF9E5726))
       ),
+      headerBuilder: (context, extended) {
+        return InkWell(
+          onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => Perfil()));},
+          child: Ink(
+            height: 120,
+            width: 100,
+            color: Colors.white70,
+            child: Padding(padding: const EdgeInsets.only(top: 40, bottom: 20), child: CircleAvatar(backgroundImage: AssetImage("Media/images/1.jpg")),),
+          ),
+        );
+      },
+      footerBuilder: (context, extended) {
+        return Column(
+          children: [
+            OutlinedButton(onPressed: () async{
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.clear();
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (route) => false);
+              },
+                child: Text("Logout")
+            ),
+            Divider(color: Colors.black.withOpacity(0.2), height: 1)
+          ],
+        );
+      },
     );
   }
 }

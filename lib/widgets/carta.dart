@@ -36,6 +36,6 @@ class carta extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }
