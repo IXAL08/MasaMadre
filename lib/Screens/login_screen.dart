@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:proyecto/Screens/forgotpassword_screen.dart';
 import 'pages.dart';
 import 'package:proyecto/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 
 class Login extends StatefulWidget {
@@ -15,12 +18,14 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String username = "", id = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     checkLogin();
+
   }
 
   void checkLogin() async{
@@ -149,10 +154,19 @@ class _LoginState extends State<Login> {
       ],
     );
   }
-  void Login() async{
+  Future Login() async{
+    var url = Uri.parse("https://ivan.stuug.com/Apps/MasaMadre/login.php");
+    var response = await http.post(url, body: {
+      "Email" : emailController.text,
+      "Password" : passwordController.text,
+    });
+    
+    var data = jsonDecode(response.body);
     if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
-      if(emailController.text == "admin" && passwordController.text == "123"){
-        pageRoute(emailController.text, passwordController.text);
+      if(data['status'] == 'Success'){
+        username = data['Username'];
+        id = data['ID_Usuarios'];
+        pageRoute(emailController.text, passwordController.text,username,id);
       }else{
         return showDialog(context: context, builder: (BuildContext context){
           return const AlertDialog(
@@ -171,11 +185,13 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void pageRoute(String email, String password) async{
+  void pageRoute(String email, String password, String username, String id) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("email", email);
     await pref.setString("password", password);
-    await pref.setString("username", "Ivan");
+    await pref.setString("username", username);
+    await pref.setString("id", id);
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => index()), (route) => false);
 
   }

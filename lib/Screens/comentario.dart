@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/Screens/editProfile_screen.dart';
+import 'package:proyecto/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:proyecto/widgets/widgets.dart';
 
-class Perfil extends StatefulWidget {
-  const Perfil({super.key});
+class Comentario extends StatefulWidget {
+  const Comentario({super.key});
 
   @override
-  State<Perfil> createState() => _PerfilState();
+  State<Comentario> createState() => _ComentarioState();
 }
 
-class _PerfilState extends State<Perfil> {
+class _ComentarioState extends State<Comentario> {
   String email = "", password = "", username = "",id="";
 
   @override
@@ -29,7 +30,6 @@ class _PerfilState extends State<Perfil> {
     });
     print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,24 +47,15 @@ class _PerfilState extends State<Perfil> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 30),
-              child: CircleAvatar(radius: 70, backgroundImage: AssetImage("Media/images/1.jpg"),),
-            ),
-            Text("$username",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
-            Text("$email", style: TextStyle(fontSize: 22)),
-            SizedBox(height: 20,),
-            Container(
-              child: ElevatedButton(onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditarPerfil()));}, child: Text("Editar perfil", style: TextStyle(color: Colors.white),),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              )
-            )
-          ],
-        ),
-      ),
+      drawer: Dibujador(),
+      body: MaterialApp(
+        initialRoute: lista.ROUTE,
+        routes: {
+          lista.ROUTE : (_) => lista(),
+          guardar.ROUTE : (_) => guardar()
+        },
+      )
     );
   }
 }
+

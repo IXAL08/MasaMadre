@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages.dart';
@@ -132,14 +134,32 @@ class _RegistrarseState extends State<Registrarse> {
     );
   }
 
-  void signUp() async{
+  Future signUp() async{
+    var url = Uri.parse("https://ivan.stuug.com/Apps/MasaMadre/register.php");
+    var response = await http.post(url, body: {
+      "Username" : userController.text,
+      "Email" : emailController.text,
+      "Password" : passwordController.text
+    });
+    
+    var data = jsonDecode(response.body);
     if(emailController.text.isNotEmpty && userController.text.isNotEmpty && passwordController.text.isNotEmpty){
-      pageRoute(emailController.text, passwordController.text, userController.text);
+      if(data == "Error"){
+        return showDialog(context: context, builder: (BuildContext context){
+          return const AlertDialog(
+            title: Center(child: Text("Error", style: TextStyle(color: Colors.red),)),
+            content: Text("Usuario ya existente"),
+          );
+        });
+      }else{
+        pageRoute(emailController.text, passwordController.text, userController.text);
+      }
+
     }else{
       return showDialog(context: context, builder: (BuildContext context){
         return const AlertDialog(
           title: Center(child: Text("Error", style: TextStyle(color: Colors.red),)),
-          content: Text("Campos incorretos. Vuelva a intentarlo"),
+          content: Text("Campos vacios. Vuelva a intentarlo"),
         );
       });
     }

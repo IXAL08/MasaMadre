@@ -13,7 +13,7 @@ class index extends StatefulWidget {
 }
 
 class _indexState extends State<index> {
-  String email = "", password = "", username = "";
+  String email = "", password = "", username = "", id="";
 
   @override
   void initState() {
@@ -22,13 +22,15 @@ class _indexState extends State<index> {
     getCred();
   }
 
-  void getCred() async{
+  Future getCred() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       email = pref.getString("email")!;
       password = pref.getString("password")!;
       username = pref.getString("username")!;
+      id = pref.getString("id")!;
     });
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
   }
 
   @override

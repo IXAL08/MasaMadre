@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto/Screens/comentario.dart';
 import 'package:proyecto/Screens/pages.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,13 +12,14 @@ class Dibujador extends StatefulWidget {
 }
 
 class _DibujadorState extends State<Dibujador> {
-  String email = "", password = "", username = "";
+  String email = "", password = "", username = "", id= "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCred();
+    print(id);
   }
 
   void getCred() async{
@@ -26,15 +28,16 @@ class _DibujadorState extends State<Dibujador> {
       email = pref.getString("email")!;
       password = pref.getString("password")!;
       username = pref.getString("username")!;
+      id = pref.getString("id")!;
     });
   }
   @override
   Widget build(BuildContext context) {
     return SidebarX(
       controller: SidebarXController(selectedIndex: 0, extended: true),
-      items: const [
-        SidebarXItem(icon: Icons.home, label: 'Inicio'),
-        SidebarXItem(icon: Icons.person, label: 'Chef'),
+      items: [
+        SidebarXItem(icon: Icons.home, label: 'Inicio',onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => index()));}),
+        SidebarXItem(icon: Icons.messenger_outlined, label: 'Comentario', onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => Comentario()));}),
       ],
       theme: SidebarXTheme(
         width: 150,
