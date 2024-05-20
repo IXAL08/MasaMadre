@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:proyecto/widgets/widgets.dart';
 
 class Comentario extends StatefulWidget {
   const Comentario({super.key});
@@ -48,13 +47,7 @@ class _ComentarioState extends State<Comentario> {
         ),
       ),
       drawer: Dibujador(),
-      body: MaterialApp(
-        initialRoute: lista.ROUTE,
-        routes: {
-          lista.ROUTE : (_) => lista(),
-          guardar.ROUTE : (_) => guardar()
-        },
-      )
+      body: ListView()
     );
   }
 }

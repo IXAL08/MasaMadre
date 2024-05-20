@@ -19,7 +19,6 @@ class _DibujadorState extends State<Dibujador> {
     // TODO: implement initState
     super.initState();
     getCred();
-    print(id);
   }
 
   void getCred() async{

@@ -3,7 +3,6 @@ export 'login_screen.dart';
 export 'receta1.dart';
 export 'resetpass_screen.dart';
 export 'signup_screen.dart';
-export 'resetpass_screen.dart';
 export 'profile_screen.dart';
 export 'editProfile_screen.dart';
 export 'receta2.dart';
