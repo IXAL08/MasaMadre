@@ -77,4 +77,8 @@ class ForgotPassword extends StatelessWidget {
     );
   }
 
+  void resetpassword() async{
+
+}
+
 }
