@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class ForgotPassword extends StatelessWidget {
-  ForgotPassword({super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
+  @override
+  State<ForgotPassword> createState() => _ForgotPassword();
+}
+class _ForgotPassword extends State<ForgotPassword>{
   TextEditingController emailController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +63,7 @@ class ForgotPassword extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
-                    onPressed: () {showDialog(context: context, builder: (BuildContext context){
-                      return const AlertDialog(
-                        title: Center(child: Text("¡Correo enviado!", style: TextStyle(color: Colors.red),)),
-                        content: Text("Revise su correo porfavor"),
-                      );
-                    });},
+                    onPressed: () {resetpassword();},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                     ),
@@ -77,8 +78,37 @@ class ForgotPassword extends StatelessWidget {
     );
   }
 
-  void resetpassword() async{
+  Future resetpassword() async{
+    var url = Uri.parse("https://ivan.stuug.com/Apps/MasaMadre/resetpassword.php");
+    var response = await http.post(url, body: {
+      "Email" : emailController.text,
+    });
+    var data = jsonDecode(response.body);
 
+    if(emailController.text.isNotEmpty){
+      if(data['status'] == 'Success'){
+        return showDialog(context: context, builder: (BuildContext context){
+          return const AlertDialog(
+            title: Center(child: Text("Correo enviado.", style: TextStyle(color: Colors.green),)),
+            content: Text("Revise su correo por favor."),
+          );
+        });
+      }else{
+        return showDialog(context: context, builder: (BuildContext context){
+          return const AlertDialog(
+            title: Center(child: Text("Error", style: TextStyle(color: Colors.red),)),
+            content: Text("Correo no existente."),
+          );
+        });
+      }
+    }else{
+      return showDialog(context: context, builder: (BuildContext context){
+        return const AlertDialog(
+          title: Center(child: Text("Error", style: TextStyle(color: Colors.red),)),
+          content: Text("Campos en blanco. Vuelva a intentarlo"),
+        );
+      });
+    }
 }
 
 }
