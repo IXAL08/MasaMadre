@@ -10,7 +10,7 @@ class Perfil extends StatefulWidget {
 }
 
 class _PerfilState extends State<Perfil> {
-  String email = "", password = "", username = "",id="";
+  String email = "", password = "", username = "",id="",foto="";
 
   @override
   void initState() {
@@ -19,15 +19,16 @@ class _PerfilState extends State<Perfil> {
     getCred();
   }
 
-  void getCred() async{
+  Future getCred() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       email = pref.getString("email")!;
       password = pref.getString("password")!;
       username = pref.getString("username")!;
       id = pref.getString("id")!;
+      foto = pref.getString("foto")!;
     });
-    print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id + "foto: " + foto);
   }
 
   @override
@@ -52,7 +53,7 @@ class _PerfilState extends State<Perfil> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 30),
-              child: CircleAvatar(radius: 70, backgroundImage: AssetImage("Media/images/1.jpg"),),
+              child: CircleAvatar(radius: 70, backgroundImage: NetworkImage("https://ivan.stuug.com/Apps/MasaMadre/fotos/$foto"),),
             ),
             Text("$username",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
             Text("$email", style: TextStyle(fontSize: 22)),

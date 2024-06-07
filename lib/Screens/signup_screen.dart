@@ -14,7 +14,7 @@ class Registrarse extends StatefulWidget {
 
 class _RegistrarseState extends State<Registrarse> {
   TextEditingController userController = TextEditingController(), emailController = TextEditingController(), passwordController = TextEditingController();
-  String id = "";
+  String id = "", foto = "1.jpg";
 
   @override
   void initState() {
@@ -153,7 +153,7 @@ class _RegistrarseState extends State<Registrarse> {
           );
         });
       }else{
-        pageRoute(emailController.text, passwordController.text, userController.text,id);
+        pageRoute(emailController.text, passwordController.text, userController.text,id,foto);
       }
 
     }else{
@@ -165,12 +165,13 @@ class _RegistrarseState extends State<Registrarse> {
       });
     }
 }
-  void pageRoute(String email, String password, String username, String id) async{
+  void pageRoute(String email, String password, String username, String id,String foto) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("email", email);
     await pref.setString("password", password);
     await pref.setString("username", username);
     await pref.setString("id", id);
+    await pref.setString("foto", foto);
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => index()), (route) => false);
 
   }

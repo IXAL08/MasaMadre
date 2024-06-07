@@ -12,7 +12,7 @@ class Dibujador extends StatefulWidget {
 }
 
 class _DibujadorState extends State<Dibujador> {
-  String email = "", password = "", username = "", id= "";
+  String email = "", password = "", username = "", id= "",foto="";
 
   @override
   void initState() {
@@ -21,14 +21,16 @@ class _DibujadorState extends State<Dibujador> {
     getCred();
   }
 
-  void getCred() async{
+  Future getCred() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       email = pref.getString("email")!;
       password = pref.getString("password")!;
       username = pref.getString("username")!;
       id = pref.getString("id")!;
+      foto = pref.getString("foto")!;
     });
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id + "foto: " + foto);
   }
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class _DibujadorState extends State<Dibujador> {
             height: 120,
             width: 100,
             color: Colors.white70,
-            child: Padding(padding: const EdgeInsets.only(top: 40, bottom: 20), child: CircleAvatar(backgroundImage: AssetImage("Media/images/1.jpg")),),
+            child: Padding(padding: const EdgeInsets.only(top: 40, bottom: 20), child: CircleAvatar(backgroundImage: NetworkImage("https://ivan.stuug.com/Apps/MasaMadre/fotos/$foto")),),
           ),
         );
       },

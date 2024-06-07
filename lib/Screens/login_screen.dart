@@ -18,7 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String username = "", id = "";
+  String username = "", id = "",foto="";
 
   @override
   void initState() {
@@ -166,7 +166,8 @@ class _LoginState extends State<Login> {
       if(data['status'] == 'Success'){
         username = data['Username'];
         id = data['ID_Usuarios'];
-        pageRoute(emailController.text, passwordController.text,username,id);
+        foto = data['Foto'];
+        pageRoute(emailController.text, passwordController.text,username,id,foto);
       }else{
         return showDialog(context: context, builder: (BuildContext context){
           return const AlertDialog(
@@ -185,13 +186,14 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void pageRoute(String email, String password, String username, String id) async{
+  void pageRoute(String email, String password, String username, String id, String foto) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("email", email);
     await pref.setString("password", password);
     await pref.setString("username", username);
     await pref.setString("id", id);
-    print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
+    await pref.setString("foto", foto);
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id + "foto: " + foto);
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => index()), (route) => false);
 
   }

@@ -13,7 +13,7 @@ class index extends StatefulWidget {
 }
 
 class _indexState extends State<index> {
-  String email = "", password = "", username = "", id="";
+  String email = "", password = "", username = "", id="",foto="";
 
   @override
   void initState() {
@@ -29,8 +29,9 @@ class _indexState extends State<index> {
       password = pref.getString("password")!;
       username = pref.getString("username")!;
       id = pref.getString("id")!;
+      foto = pref.getString("foto")!;
     });
-    print("email: " + email + " password: " + password + " username: " + username + " id: " + id);
+    print("email: " + email + " password: " + password + " username: " + username + " id: " + id + "foto: " + foto);
   }
 
   @override
