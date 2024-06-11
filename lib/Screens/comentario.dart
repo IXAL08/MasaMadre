@@ -37,7 +37,7 @@ class _ComentarioState extends State<Comentario> {
     return registros;
   }
 
-  mostrar_alerta(id)
+  mostrar_alerta(id,nombre)
   {
     showDialog(
         context: context,
@@ -45,7 +45,7 @@ class _ComentarioState extends State<Comentario> {
           return AlertDialog(
             title: Text('Alerta'),
             content: SingleChildScrollView(
-              child: Text('Realmente quieres eliminar el comentario?'),
+              child: Text('Realmente quieres eliminar el comentario '+nombre+"?"),
             ),
             actions: [
               TextButton(
@@ -152,6 +152,9 @@ class _ComentarioState extends State<Comentario> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Container(
+                        child: Image.network(datos[index].imagen!, width: 300,),
+                      ),
                       Row(
                         children: [
                           Expanded(
@@ -160,7 +163,7 @@ class _ComentarioState extends State<Comentario> {
                           GestureDetector(
                             onTap: (){
                               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                return EditarComentario(datos[index].id!, datos[index].comentario!);
+                                return EditarComentario(datos[index].id!, datos[index].comentario!, datos[index].imagen!);
                               })).then((value){
                                 setState(() {
                                   datos = [];
@@ -180,7 +183,7 @@ class _ComentarioState extends State<Comentario> {
                           SizedBox(width: 10,),
                           GestureDetector(
                               onTap: (){
-                                mostrar_alerta(datos[index].id);
+                                mostrar_alerta(datos[index].id,datos[index].nombre);
                               },
                               child: Icon(Icons.delete, color: Colors.red,)),
                         ],

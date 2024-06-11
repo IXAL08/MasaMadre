@@ -5,8 +5,9 @@ class EditarComentario extends StatefulWidget {
 
   String? id = '';
   String? comentario = '';
+  String? imagen = '';
 
-  EditarComentario(this.id, this.comentario,{Key? key}) : super(key : key);
+  EditarComentario(this.id, this.comentario,this.imagen,{Key? key}) : super(key : key);
 
   @override
   State<EditarComentario> createState() => _EditarComentarioState();
